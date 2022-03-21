@@ -28,9 +28,10 @@ namespace Tests
             Vector.SwapWorkingVectors(StartingVectors, 1);
 
 
+            // lze definovat porovnávání přímo pro vektory?, lze použít Assert.Equal?, lze to psát bez toho If?
             if (Enumerable.SequenceEqual(StartingVectors[0].basis, CorrectVectors[0].basis)
                 &&
-                Enumerable.SequenceEqual(StartingVectors[1].basis, CorrectVectors[1].basis))
+                Enumerable.SequenceEqual(StartingVectors[1].basis, CorrectVectors[1].basis)) //nelze to lépe formátovat, aby šli jednoduše přehazovat řádky?
             {
                 return;
             }

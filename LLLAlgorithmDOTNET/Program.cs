@@ -27,7 +27,7 @@ namespace LLLAlgorithm
             
             Console.WriteLine(WorkingVectors[0].ToString());
             Console.WriteLine(WorkingVectors[1].ToString());
-            Console.WriteLine(WorkingVectors[2].ToString());
+            Console.WriteLine(WorkingVectors[2].ToString()); // teď asi ToString není potřeba
             
             Console.WriteLine();
             WorkingVectors = Vector.LLLAlgorithm(WorkingVectors);
@@ -37,11 +37,10 @@ namespace LLLAlgorithm
             Console.WriteLine(WorkingVectors[1].ToString());
             Console.WriteLine(WorkingVectors[2].ToString());
 
-            Console.ReadKey();
+            //Console.ReadKey(); // vynechal bych
 
         }
     }
 
 }
-
 

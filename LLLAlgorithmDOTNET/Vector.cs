@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 public class Vector
 {
-    public List<double> basis = new List<double>();
-
+    public List<double> basis = new List<double>(); //immutable (možná IEnumerable)
+        // možná i definovat vektory s integer basis
     public Vector()
     {
     }
@@ -16,7 +16,8 @@ public class Vector
     {
         string finalString = "";       
 
-            for (int i = 0; i < basis.Count; i++)
+        // lze napsat na jeden řádek pomocí String.Join nebo Enumerable.Aggregate
+        for (int i = 0; i < basis.Count; i++)
             {
                 if (i == 0)
                 {
@@ -34,14 +35,16 @@ public class Vector
         return finalString;
     }
 
+    // definovat operatory je velice rozumné, chválím
     public static double operator * (Vector vectorOne, Vector vectorTwo)
     {
         double suma = vectorOne.basis.Zip(vectorTwo.basis, (first, second) => first * second).Sum();
         return suma;
     }
+
     public static Vector operator * (Vector vector, double scalar)
     {
-        Vector v = new Vector();
+        Vector v = new Vector();  // přímo vytvořit konečný vector return new Vector …
         v.basis = vector.basis.Select(c => c * scalar).ToList();
         return v;
     }
@@ -53,14 +56,15 @@ public class Vector
 
     public static Vector operator +(Vector vectorOne, Vector vectorTwo)
     {
-        Vector v = new Vector();
+        Vector v = new Vector(); // ↑↑↑
         v.basis = vectorOne.basis.Zip(vectorTwo.basis, (first, second) => first + second).ToList();
         return v;
     }
 
    
-    public static List<Vector> LLLAlgorithm(List<Vector> WorkingVectors)
+    public static List<Vector> LLLAlgorithm(List<Vector> WorkingVectors) //metody uspořádat, aby navazovaly
     {
+        // za mě příliš nepřehledné (lze více rozdělit, upravit)
         int k = 1;
 
         List<Vector> GramSchmidtVectors = new List<Vector>();
@@ -100,8 +104,11 @@ public class Vector
     {
         return (vectorOne * vectorTwo) / (vectorTwo * vectorTwo);
     }
+
     public static Vector ModifyVector(Vector targetVector, List<Vector> WorkingVectors, int i,double SizeReductionNumber)
     {
+        // public static Vector ModifyVector(Vector targetVector, Vector Vector)
+        // SRN = SizeReductionNumber(targetVector,Vector)
         Vector suma = targetVector + (-1 * (WorkingVectors[i] * Math.Round(SizeReductionNumber)));            
         return suma;
     }
@@ -109,24 +116,27 @@ public class Vector
 
    
     public static bool LovasvCondition(Vector Ga, Vector Gb, double SizeReductionNumber)
+    // public static bool LovasvCondition(Vector Ga, Vector Gb)
     {
+        // if není potřeba >= vrací true/false
         if (Gb * Gb >= (0.75 - SizeReductionNumber * SizeReductionNumber) * (Ga * Ga))
         {
             return true;
         }
         return false;
     }
+
     public static List<Vector> CreateGramSchmidtVectors( List<Vector> WorkingVectors, List<Vector> GramSchmidtVectors) //https://www.youtube.com/watch?v=zHbfZWZJTGc
     {
-        for (int n = 0; n < WorkingVectors.Count; n++)
+        for (int n = 0; n < WorkingVectors.Count; n++) // když už for tak alespoň lze iterovat přímo přes vektory
         {           
 
-            Vector suma = new Vector();
+            Vector suma = new Vector();  // ↑↑↑
             suma.basis = WorkingVectors[n].basis;
 
-            if (n != 0)
+            if (n != 0) //if asi není potřeba
             {
-                for (int i = 0; i < n; i++)
+                for (int i = 0; i < n; i++) // ↑↑↑ ale raději aggregate
                 {
                     Vector meziVypocet = SizeReductionNumber(suma, GramSchmidtVectors[i]) * GramSchmidtVectors[i];
                     suma = suma + (-1 * meziVypocet);
@@ -136,13 +146,13 @@ public class Vector
         }
         return GramSchmidtVectors;
     }
+
     public static List<Vector> SwapWorkingVectors(List<Vector> WorkingVectors, int k)
     {
         List<Vector> NewWorkingVectors = WorkingVectors;
-        Vector t = NewWorkingVectors[k - 1];
+        Vector t = NewWorkingVectors[k - 1];  // nelze to zapsat nějak takto NewWorkingVectors[k-1,k] = NewWorkingVectors[k,k-1] ?
         NewWorkingVectors[k - 1] = NewWorkingVectors[k];
         NewWorkingVectors[k] = t;
         return NewWorkingVectors;
     }
 }
-
